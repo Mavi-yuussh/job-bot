@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Job Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm work tool, Hinglish labels
+   IDEA: a recruiter's pinboard – one card per opening, stamped as you move it along
+   PICTURE: the list itself, with a progress strip (applied / interview) on top
+   COLOUR/TYPE: white paper, navy #1F3864 ink (same as the resume), mint for applied, amber for interview; Inter Tight + Inter
+   LAYOUT: single column on phone, two-column card grid above 900px */
+:root{color-scheme:light dark;--bg:light-dark(#f4f5f7,#11141b);--card:light-dark(#fff,#1a1f2b);--ink:light-dark(#141824,#e9ecf3);--mute:light-dark(#5b6275,#9aa3b8);--line:light-dark(#dde1e8,#2c3346);--navy:light-dark(#1F3864,#9db7ef);--ok:light-dark(#0f7a4a,#5fe0a0);--okbg:light-dark(#dff5e9,#123526);--amb:light-dark(#8a5300,#ffc46b);--ambbg:light-dark(#fff1d6,#3a2a10)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;overflow-x:clip}
+h1{font:700 clamp(28px,4vw,40px)/1.08 "Inter Tight",Inter,sans-serif;margin:0;text-wrap:balance}
+.wrap{max-width:1240px;margin:0 auto;padding:clamp(18px,3vw,40px) max(4vw,14px)}
+.sub{color:var(--mute);margin:6px 0 16px;max-width:72ch}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:120px}
+.stat b{display:block;font:700 28px/1 "Inter Tight",sans-serif;color:var(--navy)}
+.stat span{font-size:13px;color:var(--mute)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.seg{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.seg button{border:0;background:transparent;color:var(--ink);font:600 15px Inter;min-height:42px;padding:0 14px;border-radius:9px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--navy);color:light-dark(#fff,#0f1420)}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.grid{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.job{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.job.applied{border-color:var(--ok)}.job.interview{border-color:var(--amb)}.job.skip{opacity:.5}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.co{font-size:14px;color:var(--mute);font-weight:600}
+.ti{font:700 18px/1.25 "Inter Tight",sans-serif;margin:2px 0 0}
+.tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.t-strong{background:var(--okbg);color:var(--ok)}.t-ok{background:var(--bg);color:var(--mute);border:1px solid var(--line)}.t-stretch{background:var(--ambbg);color:var(--amb)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--mute)}
+.meta .pay{color:var(--ok);font-weight:600}
+.note{font-size:15px;margin:0}
+.act{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:auto;padding-top:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:10px;background:var(--navy);color:light-dark(#fff,#0f1420);font:600 15px Inter;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+select{font:15px Inter;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:0 10px}
+.src{font-size:12px;color:var(--mute);margin-left:auto}
+.portal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.portal a{font-weight:600;color:var(--navy)}
+.tips{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:20px}
+.tips h2{font:700 20px "Inter Tight",sans-serif;margin:0 0 8px}.tips li{margin-bottom:6px}
+.empty{color:var(--mute);padding:20px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Aaj apply karne wali jobs</h1>
+  <p class="sub">LinkedIn ke bina, kam bheed wale portals aur company career pages se. Har card pe direct apply link hai. Har weekday subah bot nayi jobs laata hai. Apply karne ke baad status badal dena (ye isi phone/laptop pe save rehta hai). <span id="upd"></span></p>
+
+  <div class="stats">
+    <div class="stat"><b id="nApplied">0</b><span>Applied</span></div>
+    <div class="stat"><b id="nInt">0</b><span>Interview</span></div>
+    <div class="stat"><b id="nLeft">0</b><span>Baaki</span></div>
+  </div>
+
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Track">
+      <button data-t="seo" aria-pressed="true">SEO</button>
+      <button data-t="data" aria-pressed="false">Data / Web Analyst</button>
+      <button data-t="portals" aria-pressed="false">Portals</button>
+    </div>
+    <div class="seg" role="group" aria-label="Location" id="whereSeg">
+      <button data-w="all" aria-pressed="true">Sab</button>
+      <button data-w="india" aria-pressed="false">India (office/hybrid)</button>
+      <button data-w="remote" aria-pressed="false">Remote</button>
+    </div>
+  </div>
+
+  <div class="grid" id="list"><p class="empty">Jobs load ho rahi hain…</p></div>
+
+  <div class="tips">
+    <h2>Call aane ke chances kaise badhaye</h2>
+    <ol>
+      <li>Har JD padh ke resume ke Skills/Summary mein uske exact shabd daalo (sirf jo sach mein aata hai).</li>
+      <li>"Strong" wale pehle karo. "Stretch" wale bhi zaroor bhejo, kyunki experience ki shart aksar flexible hoti hai.</li>
+      <li>Job post hone ke 48 ghante ke andar apply karo. Foundit pe "first 10 applicants" wali jobs sabse achhi hain.</li>
+      <li>Big companies (Gartner, Airtel, MakeMyTrip, Paytm) mein apply karne ke baad unke kisi employee se referral maango.</li>
+      <li>Salary mein ab 30k se kam pe mat jao. Jahan pay likha hai, wahan range ka upar wala hissa maango.</li>
+    </ol>
+  </div>
+</div>
+<script>
+{
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl = u => /^https?:\/\//.test(u||'') ? u : '#';
+const PORTALS = [{"name": "Foundit – SEO, Delhi NCR", "url": "https://www.foundit.in/search/seo-jobs-in-delhi-ncr", "tip": "Open jobs marked 'Be among the first 10 applicants' – low crowd."}, {"name": "Foundit – GA4 jobs (web analyst)", "url": "https://www.foundit.in/search/ga4-jobs", "tip": "Web/digital analyst roles that fit both your skills."}, {"name": "Foundit – Data Analyst, Noida", "url": "https://www.foundit.in/search/data-analyst-jobs-in-noida", "tip": "Filter 2–4 yrs."}, {"name": "Weekday – SEO, Gurgaon", "url": "https://www.weekday.works/jobs/seo-jobs-in-gurgaon", "tip": "Startup roles, few applicants, direct to hiring team."}, {"name": "Weekday – Data Analyst, Noida", "url": "https://www.weekday.works/jobs/data-analyst-jobs-in-noida", "tip": ""}, {"name": "Cutshort – SEO, Delhi NCR", "url": "https://cutshort.io/jobs/seo-sem-jobs-in-delhi-ncr-gurgaon-noida", "tip": "Salary shown on every job – skip anything under ₹5 LPA."}, {"name": "Instahyre – SEO, Delhi NCR", "url": "https://www.instahyre.com/seo-jobs-in-delhi-ncr/", "tip": "Recruiters reach out to you – keep profile complete."}, {"name": "Instahyre – Remote SEO", "url": "https://www.instahyre.com/remote-seo-jobs/", "tip": ""}, {"name": "Himalayas – Remote SEO (India)", "url": "https://himalayas.app/jobs/countries/india/seo", "tip": "Remote roles, many foreign companies hiring in India."}, {"name": "Himalayas – Remote Data (India)", "url": "https://himalayas.app/jobs/countries/india/data-analysis", "tip": ""}, {"name": "iimjobs – Analytics, Delhi NCR", "url": "https://www.iimjobs.com/data-analytics-jobs-in-delhi-ncr", "tip": "Shows views vs applications – pick low-application jobs."}];
+let data = {jobs:[], portals:PORTALS}, track = 'seo', where = 'all';
+let st = {}; try { st = JSON.parse(localStorage.getItem('jobstatus') || '{}'); } catch(e) {}
+const save = () => { try { localStorage.setItem('jobstatus', JSON.stringify(st)); } catch(e) {} };
+const fitRank = {strong:0, ok:1, stretch:2};
+const fitLabel = {strong:'Strong fit', ok:'Achha fit', stretch:'Stretch'};
+
+function stats(){
+  const v = Object.values(st);
+  $('#nApplied').textContent = v.filter(x => x==='applied' || x==='interview').length;
+  $('#nInt').textContent = v.filter(x => x==='interview').length;
+  $('#nLeft').textContent = data.jobs.filter(j => !st[j.id]).length;
+}
+
+function render(){
+  $('#whereSeg').style.display = track==='portals' ? 'none' : '';
+  if (track === 'portals'){
+    $('#list').innerHTML = data.portals.map(p => `<div class="portal"><a href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener">${esc(p.name)} ↗</a>${p.tip?`<p class="note" style="margin-top:6px">${esc(p.tip)}</p>`:''}</div>`).join('');
+    return;
+  }
+  const rows = data.jobs.filter(j => j.track===track && (where==='all' || j.where===where))
+    .sort((a,b) => ((st[a.id]==='skip')-(st[b.id]==='skip')) || (b.is_new?1:0)-(a.is_new?1:0) || fitRank[a.fit]-fitRank[b.fit]);
+  if (!rows.length){ $('#list').innerHTML = '<p class="empty">Is filter mein abhi koi job nahi.</p>'; return; }
+  $('#list').innerHTML = rows.map(j => {
+    const s = st[j.id] || '';
+    return `<article class="job ${esc(s)}">
+      <div class="top"><div><div class="co">${j.is_new?'<span class="tag t-strong" style="margin-right:6px">NEW</span>':''}${esc(j.company)}</div><h3 class="ti">${esc(j.title)}</h3></div>
+      <span class="tag t-${esc(j.fit)}">${esc(fitLabel[j.fit]||j.fit)}</span></div>
+      <div class="meta"><span>📍 ${esc(j.location)}</span><span>${esc(j.mode)}</span><span>${esc(j.exp)}</span>${j.pay?`<span class="pay">${esc(j.pay)}</span>`:''}<span>${esc(j.posted)}</span></div>
+      <p class="note">${esc(j.note)}</p>
+      <div class="act"><a class="btn" href="${esc(safeUrl(j.url))}" target="_blank" rel="noopener">Apply ↗</a>
+        <select data-id="${esc(j.id)}" aria-label="Status">
+          <option value="" ${!s?'selected':''}>Abhi apply karna hai</option>
+          <option value="applied" ${s==='applied'?'selected':''}>Applied ✓</option>
+          <option value="interview" ${s==='interview'?'selected':''}>Interview call aaya 🎉</option>
+          <option value="skip" ${s==='skip'?'selected':''}>Skip</option>
+        </select><span class="src">${esc(j.source)}</span></div>
+    </article>`;
+  }).join('');
+}
+
+document.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { track = b.dataset.t; document.querySelectorAll('[data-t]').forEach(x => x.setAttribute('aria-pressed', x===b)); render(); });
+document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { where = b.dataset.w; document.querySelectorAll('[data-w]').forEach(x => x.setAttribute('aria-pressed', x===b)); render(); });
+$('#list').addEventListener('change', e => { const s = e.target.closest('select[data-id]'); if(!s) return; if (s.value) st[s.dataset.id] = s.value; else delete st[s.dataset.id]; save(); stats(); render(); });
+
+fetch('jobs.json', {cache:'no-store'}).then(r => r.json()).then(d => {
+  data = {jobs:d.jobs||[], portals:PORTALS}; $('#upd').textContent = 'Last update: ' + d.updated + '.'; stats(); render();
+}).catch(() => { $('#list').innerHTML = '<p class="empty">Jobs load nahi hui. Page reload karo.</p>'; });
+}
+</script>
+</body>
+</html>
