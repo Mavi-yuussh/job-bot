@@ -1,60 +1,6 @@
 {
- "updated": "2026-11-25 01:29 IST",
+ "updated": "2026-11-25 15:58 IST",
  "jobs": [
-  {
-   "id": "paytm-careers-https-jobs-lever-co-paytm-ab166330-5876-488e-b90c-749df6e871b1",
-   "track": "data",
-   "where": "india",
-   "fit": "strong",
-   "company": "Paytm",
-   "title": "Business Analytics- Paytm Gold | Experience : 5-7 yrs",
-   "location": "Noida, Uttar Pradesh",
-   "mode": "Office / Hybrid (check listing)",
-   "exp": "5+ yrs asked",
-   "pay": "",
-   "posted": "21 Aug",
-   "source": "paytm careers",
-   "url": "https://jobs.lever.co/paytm/ab166330-5876-488e-b90c-749df6e871b1",
-   "note": "Matches: a/b, bigquery, dashboard, excel, google analytics, pandas, power bi, python",
-   "first_seen": "2026-11-24",
-   "is_new": true
-  },
-  {
-   "id": "paytm-careers-https-jobs-lever-co-paytm-36be80ec-3701-4d0f-8048-7571e3bd3a56",
-   "track": "data",
-   "where": "india",
-   "fit": "strong",
-   "company": "Paytm",
-   "title": "Growth Management & Analytics- Recharges & Utilities I Exp- 4-6 Years",
-   "location": "Noida, Uttar Pradesh",
-   "mode": "Office / Hybrid (check listing)",
-   "exp": "4+ yrs asked",
-   "pay": "",
-   "posted": "15 Sep",
-   "source": "paytm careers",
-   "url": "https://jobs.lever.co/paytm/36be80ec-3701-4d0f-8048-7571e3bd3a56",
-   "note": "Matches: a/b, bigquery, excel, python, sql, statistics",
-   "first_seen": "2026-11-24",
-   "is_new": true
-  },
-  {
-   "id": "shyftlabs-careers-https-jobs-lever-co-shyftlabs-60b192de-bdc7-4ae0-b2ca-a7327939ce1d",
-   "track": "data",
-   "where": "india",
-   "fit": "ok",
-   "company": "Shyftlabs",
-   "title": "Senior Data Analyst",
-   "location": "Noida, Uttar Pradesh",
-   "mode": "Office / Hybrid (check listing)",
-   "exp": "Not listed",
-   "pay": "",
-   "posted": "27 Aug",
-   "source": "shyftlabs careers",
-   "url": "https://jobs.lever.co/shyftlabs/60b192de-bdc7-4ae0-b2ca-a7327939ce1d",
-   "note": "Matches: dashboard, looker, power bi, python, sql",
-   "first_seen": "2026-11-24",
-   "is_new": true
-  },
   {
    "id": "s-airtel-seo",
    "track": "seo",
@@ -71,7 +17,7 @@
    "url": "https://www.foundit.in/job/senior-manager-seo-website-3-6-years-airtel-gurugram-48106571",
    "note": "Big brand, in-house. Owns SEO strategy + website for Airtel Business. Stretch title but 3–6 yrs range fits.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-mmt-se",
@@ -89,7 +35,7 @@
    "url": "https://www.foundit.in/job/search-engine-optimization-makemytrip-com-gurgaon-gurugram-48695995",
    "note": "Senior Executive level matches 2.5 yrs. Large-scale technical SEO – same as your ABP work.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-junglee",
@@ -107,7 +53,7 @@
    "url": "https://builtin.com/job/seo-executive-ii/3828493",
    "note": "Exact experience match. Wants GSC, GA, SEMrush, Ahrefs, Sheets/Excel – all on your resume.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-trademo",
@@ -125,7 +71,7 @@
    "url": "https://jobs.weekday.works/search-engine-optimization-specialist-at-trademo-wkdyhgwnzz",
    "note": "Funded product company (trade data). Experience range fits exactly.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-fountain",
@@ -143,7 +89,7 @@
    "url": "https://www.foundit.in/job/senior-seo-executive-fountain-digital-gurugram-44128414",
    "note": "Hybrid, Mon–Fri. Agency, but a good stepping stone.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-speakx",
@@ -161,7 +107,7 @@
    "url": "https://www.foundit.in/job/search-engine-optimization-specialist-speakx-ai-gurugram-50068223",
    "note": "Build organic from scratch. ASO is new to you – mention you learn fast; SEO part is a strong match.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-bloggers",
@@ -179,7 +125,7 @@
    "url": "https://himalayas.app/companies/bloggersideas/jobs/seo-specialist",
    "note": "Mentions AI Overviews explicitly. Small team, fully remote, IST hours.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-gartner-da",
@@ -197,7 +143,7 @@
    "url": "https://jobs.gartner.com/jobs/job/112641-sr-data-analyst-or-data-analyst-advanced-analytics-basics-of-data-science-databricks-sql-advanced-excel/",
    "note": "Best match in this list: exact experience, hybrid, MNC. SQL, Python, stats, Excel, PowerPoint.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-gartner-sql",
@@ -215,7 +161,7 @@
    "url": "https://jobs.gartner.com/jobs/job/109701-senior-data-analyst-advanced-sql-powerbi/",
    "note": "SQL + Power BI = your 117-dashboard story.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-gartner-int",
@@ -233,7 +179,7 @@
    "url": "https://jobs.gartner.com/jobs/job/110301-senior-data-analyst-data-integration-analytics-python-sql-power-bi/",
    "note": "Mentions LLM summarisation in reporting – you already do this with OpenAI/Gemini APIs.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-paytm-tag",
@@ -251,7 +197,7 @@
    "url": "https://jobs.lever.co/paytm/5f4286f9-1a90-4cf2-bc78-2735a8e2a63b",
    "note": "GTM + GA4 + JavaScript – a true web-analyst role. Noida option.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-guardian",
@@ -269,7 +215,7 @@
    "url": "https://career.io/job/senior-analyst-web-analytics-gurugram-guardian-life-0c488d44e7b6c7becf4ee14093d6e845",
    "note": "GTM, GA4, Looker Studio, traffic & conversion analysis – almost word-for-word your job. Verify it's still open.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-publicis",
@@ -287,7 +233,7 @@
    "url": "https://www.foundit.in/job/analytics-specialist-publicis-global-delivery-pgd-gurugram-40149252",
    "note": "GA4 data into BigQuery + ETL + reporting = exactly what you do at ABP.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-mastek",
@@ -305,7 +251,7 @@
    "url": "https://careers.mastek.com/job/Noida-Data-Analyst/59290044/",
    "note": "Noida + exact experience range. Shift is 12–9 PM.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-weekday-remote",
@@ -323,7 +269,7 @@
    "url": "https://builtin.com/job/data-analyst-data-scientist/9627466",
    "note": "Fully remote, SQL + Python. Ask for top of range.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-neenopal",
@@ -341,7 +287,7 @@
    "url": "https://career.io/job/web-analyst-gagtm-expert-neenopal-inc-4537efc4dae32ba890209c7100f8221f",
    "note": "GA4 + GTM + custom reports + A/B tests – your profile. Verify it's open.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-passionfruit",
@@ -359,7 +305,7 @@
    "url": "https://www.foundit.in/job/seo-analyst-passionfruit-delhi-66191810",
    "note": "Growth agency for Nykaa, Bayer etc. Includes off-page work – be honest that your strength is technical.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-paytm",
@@ -377,7 +323,7 @@
    "url": "https://jobs.lever.co/paytm/9cd45714-b670-408a-b535-c86c441f4353",
    "note": "Noida = no commute change. Listing mentions willingness for night shifts – check before applying.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-indika",
@@ -395,7 +341,7 @@
    "url": "https://www.apna.co/job/gurgaon-gurugram/senior-seo-executive-536027742",
    "note": "Pay range is listed – ask for the top end. GA4, GSC, KPI reporting heavy = your strength.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-tangence",
@@ -413,7 +359,7 @@
    "url": "https://www.foundit.in/job/seo-analyst-tangence-india-noida-55309468",
    "note": "Agency, e-commerce SEO; SEMrush must. Noida location.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-cog",
@@ -431,7 +377,7 @@
    "url": "https://jobs.weekday.works/senior-seo-executive-at-cog-culture-wkdyz0l441",
    "note": "Agency. Apply with the SEO resume tailored to the JD.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-remoteworld",
@@ -449,7 +395,7 @@
    "url": "https://remotive.com/remote/jobs/marketing/seo-specialist-4399341",
    "note": "Technical + content SEO, reporting-heavy.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-quill",
@@ -467,7 +413,7 @@
    "url": "https://wellfound.com/jobs/2965462-seo-specialist-web3",
    "note": "Remote, pay listed. Web3/security niche.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-amex",
@@ -485,7 +431,7 @@
    "url": "https://www.foundit.in/job/analyst-data-analytics-american-express-trs-gurugram-52951752",
    "note": "SQL, Python, Power BI, Tableau, statistics. Big brand – tailor hard.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-hr",
@@ -503,7 +449,7 @@
    "url": "https://www.foundit.in/job/59855125",
    "note": "Noida, exact experience. BI/reporting role in HR domain.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-weekday-ggn",
@@ -521,7 +467,7 @@
    "url": "http://jobs.workable.com/view/55e7ca05-4a20-4f5d-9e41-55d6d7e92b19",
    "note": "Pay listed (₹42k–66k/month). Marketing analytics = good fit.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-integrate",
@@ -539,7 +485,7 @@
    "url": "https://himalayas.app/companies/integrate/jobs/data-analyst",
    "note": "Strong SQL + some Python/Spark. Client-facing reporting.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-mmt-am",
@@ -557,7 +503,7 @@
    "url": "https://www.foundit.in/job/59419537",
    "note": "AEO + JavaScript SEO + mobile-first – your strongest areas. Experience ask is higher; apply anyway.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-ridge",
@@ -575,7 +521,7 @@
    "url": "https://jobs.weekday.works/seo-aeo-manager-at-ridge-advertising-marketing-consultants-wkdyf7gl40",
    "note": "AEO-focused role – your AI search work is exactly this.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-gtech",
@@ -593,7 +539,7 @@
    "url": "https://himalayas.app/companies/gtech/jobs/senior-seo-specialist-remote-work",
    "note": "Wants GEO, AI Overviews, Python, APIs, Looker Studio – very close to your profile. Experience ask is higher.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "s-discovered",
@@ -611,7 +557,7 @@
    "url": "https://himalayas.app/companies/discovered/jobs/seo-aeo-lead",
    "note": "Dream-shot foreign role. Needs UK-time overlap and team-lead experience; send the short form + Loom video they ask for.",
    "first_seen": "2026-11-25",
-   "is_new": false
+   "is_new": true
   },
   {
    "id": "d-gartner-adv",
@@ -629,6 +575,60 @@
    "url": "https://jobs.gartner.com/jobs/job/111807-sr-data-analyst-advanced-analytics/",
    "note": "Hypothesis testing, product analytics, AI-assisted analytics.",
    "first_seen": "2026-11-25",
+   "is_new": true
+  },
+  {
+   "id": "paytm-careers-https-jobs-lever-co-paytm-ab166330-5876-488e-b90c-749df6e871b1",
+   "track": "data",
+   "where": "india",
+   "fit": "strong",
+   "company": "Paytm",
+   "title": "Business Analytics- Paytm Gold | Experience : 5-7 yrs",
+   "location": "Noida, Uttar Pradesh",
+   "mode": "Office / Hybrid (check listing)",
+   "exp": "5+ yrs asked",
+   "pay": "",
+   "posted": "21 Aug",
+   "source": "paytm careers",
+   "url": "https://jobs.lever.co/paytm/ab166330-5876-488e-b90c-749df6e871b1",
+   "note": "Matches: a/b, bigquery, dashboard, excel, google analytics, pandas, power bi, python",
+   "first_seen": "2026-11-24",
+   "is_new": false
+  },
+  {
+   "id": "paytm-careers-https-jobs-lever-co-paytm-36be80ec-3701-4d0f-8048-7571e3bd3a56",
+   "track": "data",
+   "where": "india",
+   "fit": "strong",
+   "company": "Paytm",
+   "title": "Growth Management & Analytics- Recharges & Utilities I Exp- 4-6 Years",
+   "location": "Noida, Uttar Pradesh",
+   "mode": "Office / Hybrid (check listing)",
+   "exp": "4+ yrs asked",
+   "pay": "",
+   "posted": "15 Sep",
+   "source": "paytm careers",
+   "url": "https://jobs.lever.co/paytm/36be80ec-3701-4d0f-8048-7571e3bd3a56",
+   "note": "Matches: a/b, bigquery, excel, python, sql, statistics",
+   "first_seen": "2026-11-24",
+   "is_new": false
+  },
+  {
+   "id": "shyftlabs-careers-https-jobs-lever-co-shyftlabs-60b192de-bdc7-4ae0-b2ca-a7327939ce1d",
+   "track": "data",
+   "where": "india",
+   "fit": "ok",
+   "company": "Shyftlabs",
+   "title": "Senior Data Analyst",
+   "location": "Noida, Uttar Pradesh",
+   "mode": "Office / Hybrid (check listing)",
+   "exp": "Not listed",
+   "pay": "",
+   "posted": "27 Aug",
+   "source": "shyftlabs careers",
+   "url": "https://jobs.lever.co/shyftlabs/60b192de-bdc7-4ae0-b2ca-a7327939ce1d",
+   "note": "Matches: dashboard, looker, power bi, python, sql",
+   "first_seen": "2026-11-24",
    "is_new": false
   }
  ]
