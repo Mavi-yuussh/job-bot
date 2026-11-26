@@ -593,5 +593,22 @@
   "url": "https://jobs.lever.co/shyftlabs/60b192de-bdc7-4ae0-b2ca-a7327939ce1d",
   "note": "Matches: dashboard, looker, power bi, python, sql",
   "first_seen": "2026-11-24"
+ },
+ "paytm-careers-https-jobs-lever-co-paytm-2dacc825-d862-41d0-bba5-0c2136727b5f": {
+  "id": "paytm-careers-https-jobs-lever-co-paytm-2dacc825-d862-41d0-bba5-0c2136727b5f",
+  "track": "data",
+  "where": "india",
+  "fit": "ok",
+  "company": "Paytm",
+  "title": "Product Analytics - UPI Product | Experience : 3-5 yrs",
+  "location": "Noida, Uttar Pradesh",
+  "mode": "Office / Hybrid (check listing)",
+  "exp": "3+ yrs asked",
+  "pay": "",
+  "posted": "26 Nov",
+  "source": "paytm careers",
+  "url": "https://jobs.lever.co/paytm/2dacc825-d862-41d0-bba5-0c2136727b5f",
+  "note": "Matches: a/b, dashboard, discover, python, sql",
+  "first_seen": "2026-11-26"
  }
 }
