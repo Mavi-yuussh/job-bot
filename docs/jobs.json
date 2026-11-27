@@ -1,24 +1,6 @@
 {
- "updated": "2026-11-27 04:07 IST",
+ "updated": "2026-11-27 15:37 IST",
  "jobs": [
-  {
-   "id": "paytm-careers-https-jobs-lever-co-paytm-2dacc825-d862-41d0-bba5-0c2136727b5f",
-   "track": "data",
-   "where": "india",
-   "fit": "ok",
-   "company": "Paytm",
-   "title": "Product Analytics - UPI Product | Experience : 3-5 yrs",
-   "location": "Noida, Uttar Pradesh",
-   "mode": "Office / Hybrid (check listing)",
-   "exp": "3+ yrs asked",
-   "pay": "",
-   "posted": "26 Nov",
-   "source": "paytm careers",
-   "url": "https://jobs.lever.co/paytm/2dacc825-d862-41d0-bba5-0c2136727b5f",
-   "note": "Matches: a/b, dashboard, discover, python, sql",
-   "first_seen": "2026-11-26",
-   "is_new": true
-  },
   {
    "id": "paytm-careers-https-jobs-lever-co-paytm-ab166330-5876-488e-b90c-749df6e871b1",
    "track": "data",
@@ -557,6 +539,24 @@
    "url": "https://himalayas.app/companies/integrate/jobs/data-analyst",
    "note": "Strong SQL + some Python/Spark. Client-facing reporting.",
    "first_seen": "2026-11-25",
+   "is_new": false
+  },
+  {
+   "id": "paytm-careers-https-jobs-lever-co-paytm-2dacc825-d862-41d0-bba5-0c2136727b5f",
+   "track": "data",
+   "where": "india",
+   "fit": "ok",
+   "company": "Paytm",
+   "title": "Product Analytics - UPI Product | Experience : 3-5 yrs",
+   "location": "Noida, Uttar Pradesh",
+   "mode": "Office / Hybrid (check listing)",
+   "exp": "3+ yrs asked",
+   "pay": "",
+   "posted": "26 Nov",
+   "source": "paytm careers",
+   "url": "https://jobs.lever.co/paytm/2dacc825-d862-41d0-bba5-0c2136727b5f",
+   "note": "Matches: a/b, dashboard, discover, python, sql",
+   "first_seen": "2026-11-26",
    "is_new": false
   },
   {
