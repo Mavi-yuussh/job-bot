@@ -3,144 +3,635 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Job Board</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<title>Manny Job Board</title>
+<meta name="theme-color" content="#11141b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* VOICE: calm work tool, Hinglish labels
-   IDEA: a recruiter's pinboard – one card per opening, stamped as you move it along
-   PICTURE: the list itself, with a progress strip (applied / interview) on top
-   COLOUR/TYPE: white paper, navy #1F3864 ink (same as the resume), mint for applied, amber for interview; Inter Tight + Inter
-   LAYOUT: single column on phone, two-column card grid above 900px */
-:root{color-scheme:light dark;--bg:light-dark(#f4f5f7,#11141b);--card:light-dark(#fff,#1a1f2b);--ink:light-dark(#141824,#e9ecf3);--mute:light-dark(#5b6275,#9aa3b8);--line:light-dark(#dde1e8,#2c3346);--navy:light-dark(#1F3864,#9db7ef);--ok:light-dark(#0f7a4a,#5fe0a0);--okbg:light-dark(#dff5e9,#123526);--amb:light-dark(#8a5300,#ffc46b);--ambbg:light-dark(#fff1d6,#3a2a10)}
-:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+/* VOICE: calm daily work tool, Hinglish labels, one job = one decision
+   IDEA: a morning queue – freshest openings on top, each card cleared by "Applied" or "Skip"
+   COLOUR/TYPE: navy ink (same as the resume), mint = applied/fresh, amber = attention; Inter Tight + Inter */
+:root{color-scheme:light dark;--bg:light-dark(#f4f5f7,#11141b);--card:light-dark(#fff,#1a1f2b);--card2:light-dark(#f8f9fb,#151a25);--ink:light-dark(#141824,#e9ecf3);--mute:light-dark(#5b6275,#9aa3b8);--line:light-dark(#dde1e8,#2c3346);--navy:light-dark(#1F3864,#9db7ef);--navyInk:light-dark(#fff,#0f1420);--ok:light-dark(#0f7a4a,#5fe0a0);--okbg:light-dark(#dff5e9,#123526);--amb:light-dark(#8a5300,#ffc46b);--ambbg:light-dark(#fff1d6,#3a2a10);--red:light-dark(#b42318,#ff8f85);--redbg:light-dark(#fde8e6,#3a1714)}
 *{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;overflow-x:clip}
-h1{font:700 clamp(28px,4vw,40px)/1.08 "Inter Tight",Inter,sans-serif;margin:0;text-wrap:balance}
-.wrap{max-width:1240px;margin:0 auto;padding:clamp(18px,3vw,40px) max(4vw,14px)}
-.sub{color:var(--mute);margin:6px 0 16px;max-width:72ch}
-.stats{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 16px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:120px}
-.stat b{display:block;font:700 28px/1 "Inter Tight",sans-serif;color:var(--navy)}
-.stat span{font-size:13px;color:var(--mute)}
-.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
-.seg{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
-.seg button{border:0;background:transparent;color:var(--ink);font:600 15px Inter;min-height:42px;padding:0 14px;border-radius:9px;cursor:pointer}
-.seg button[aria-pressed=true]{background:var(--navy);color:light-dark(#fff,#0f1420)}
+h1,h2,h3{font-family:"Inter Tight",Inter,sans-serif;text-wrap:balance}
+h1{font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.08;margin:0}
+h2{font-size:22px;margin:0 0 10px}
+a{color:var(--navy)}
+.wrap{max-width:1240px;margin:0 auto;padding:clamp(18px,3vw,36px) max(4vw,14px) 120px}
+.sub{color:var(--mute);margin:6px 0 16px;max-width:80ch}
 :focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+button{font:inherit;color:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--navy);background:var(--navy);color:var(--navyInk);font-weight:600;font-size:15px;text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--navy)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:light-dark(#fff,#0b2018)}
+.btn.small{min-height:36px;padding:0 12px;font-size:14px}
+.btn.quiet{background:transparent;border-color:var(--line);color:var(--mute)}
+input,select,textarea{font:15px Inter,sans-serif;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);padding:10px 12px;width:100%}
+textarea{min-height:120px;resize:vertical;line-height:1.45}
+label{font-size:14px;font-weight:600;color:var(--mute);display:block;margin-bottom:4px}
+
+/* today panel */
+.today{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;margin:0 0 16px}
+@media(max-width:760px){.today{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.target b{font:700 34px/1 "Inter Tight",sans-serif;color:var(--navy)}
+.prog{height:10px;border-radius:10px;background:var(--card2);border:1px solid var(--line);overflow:hidden;margin:10px 0}
+.prog i{display:block;height:100%;background:var(--ok);width:0;transition:width .4s}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat b{display:block;font:700 26px/1 "Inter Tight",sans-serif;color:var(--navy)}
+.stat span{font-size:13px;color:var(--mute)}
+
+/* tabs + filters */
+.tabs{display:flex;gap:4px;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:12px;scrollbar-width:thin;position:sticky;top:0;z-index:5}
+.tabs button{border:0;background:transparent;font-weight:600;font-size:15px;min-height:42px;padding:0 14px;border-radius:9px;cursor:pointer;white-space:nowrap;flex:0 0 auto}
+.tabs button[aria-selected=true]{background:var(--navy);color:var(--navyInk)}
+.tabs .n{font-weight:500;opacity:.75;margin-left:4px;font-size:13px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.seg{display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;font-size:14px;font-weight:600;min-height:36px;padding:0 11px;border-radius:7px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--card2);color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy)}
+.filters input[type=search]{max-width:240px;min-height:42px}
+.chk{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--mute);margin:0;cursor:pointer}
+.chk input{width:18px;height:18px}
+
+/* job cards */
 .grid{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
 @media(min-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.job{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
-.job.applied{border-color:var(--ok)}.job.interview{border-color:var(--amb)}.job.skip{opacity:.5}
+.job{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;transition:opacity .3s,transform .3s}
+.job.gone{opacity:0;transform:scale(.97)}
 .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+.tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap;background:var(--card2);color:var(--mute);border:1px solid var(--line)}
+.t-hot{background:var(--okbg);color:var(--ok);border-color:transparent}
+.t-new{background:var(--navy);color:var(--navyInk);border-color:transparent}
+.t-media{background:var(--ambbg);color:var(--amb);border-color:transparent}
+.t-strong{background:var(--okbg);color:var(--ok);border-color:transparent}
+.t-stretch{background:var(--ambbg);color:var(--amb);border-color:transparent}
 .co{font-size:14px;color:var(--mute);font-weight:600}
-.ti{font:700 18px/1.25 "Inter Tight",sans-serif;margin:2px 0 0}
-.tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.t-strong{background:var(--okbg);color:var(--ok)}.t-ok{background:var(--bg);color:var(--mute);border:1px solid var(--line)}.t-stretch{background:var(--ambbg);color:var(--amb)}
-.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--mute)}
+.ti{font-weight:700;font-size:18px;line-height:1.25;margin:2px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px;color:var(--mute)}
 .meta .pay{color:var(--ok);font-weight:600}
-.note{font-size:15px;margin:0}
+.why{font-size:14px;margin:0;color:var(--ink)}
+.why em{font-style:normal;color:var(--mute)}
 .act{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:auto;padding-top:4px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:10px;background:var(--navy);color:light-dark(#fff,#0f1420);font:600 15px Inter;text-decoration:none}
-.btn.ghost{background:transparent;color:var(--navy);border:1px solid var(--navy)}
-select{font:15px Inter;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:0 10px}
-.src{font-size:12px;color:var(--mute);margin-left:auto}
-.portal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-.portal a{font-weight:600;color:var(--navy)}
-.tips{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:20px}
-.tips h2{font:700 20px "Inter Tight",sans-serif;margin:0 0 8px}.tips li{margin-bottom:6px}
 .empty{color:var(--mute);padding:20px 0}
+
+/* other tabs */
+.cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.pc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.pc h3{font-size:16px;margin:0}
+.pc p{margin:0;font-size:14px;color:var(--mute)}
+.section{margin:22px 0 10px}
+.section p{color:var(--mute);margin:0 0 10px;max-width:80ch}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:16px;align-items:start}
+@media(max-width:900px){.two{grid-template-columns:minmax(0,1fr)}}
+.fields{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.fields .full{grid-column:1/-1}
+@media(max-width:560px){.fields{grid-template-columns:minmax(0,1fr)}}
+.out{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.out h3{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.out pre{white-space:pre-wrap;font:15px/1.5 Inter,sans-serif;margin:0;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13px;padding:3px 10px;border-radius:20px;border:1px solid var(--line)}
+.chip.have{background:var(--okbg);color:var(--ok);border-color:transparent}
+.chip.miss{background:var(--redbg);color:var(--red);border-color:transparent}
+.meter{font:700 40px/1 "Inter Tight",sans-serif}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600}
+.tablewrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.note{font-size:14px;color:var(--mute)}
+.warn{background:var(--ambbg);color:var(--amb);border-radius:10px;padding:10px 12px;font-size:14px}
+
+/* bottom bars */
+.ask{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);width:min(640px,calc(100% - 24px));background:var(--card);border:2px solid var(--ok);border-radius:14px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:20;display:none}
+.ask.show{display:block}
+.ask p{margin:0 0 8px;font-weight:600}
+.toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:none;gap:12px;align-items:center;z-index:30;font-size:15px;max-width:calc(100% - 24px)}
+.toast.show{display:flex}
+.toast button{background:transparent;border:0;color:var(--bg);font-weight:700;text-decoration:underline;cursor:pointer}
+.sync{font-size:13px;color:var(--mute)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Aaj apply karne wali jobs</h1>
-  <p class="sub">LinkedIn ke bina, kam bheed wale portals aur company career pages se. Har card pe direct apply link hai. Har weekday subah bot nayi jobs laata hai. Apply karne ke baad status badal dena (ye isi phone/laptop pe save rehta hai). <span id="upd"></span></p>
+  <h1>Aaj ki fresh jobs</h1>
+  <p class="sub">SEO · Data / Business Analyst · Data Scientist · Media. Sirf Delhi NCR (office/hybrid) ya India se remote, 3–5 saal experience, ₹55k+/month (jahan salary likhi hai), last 7 din mein post hui. Bot har 3 ghante mein nayi jobs laata hai. <span id="upd"></span></p>
 
-  <div class="stats">
-    <div class="stat"><b id="nApplied">0</b><span>Applied</span></div>
-    <div class="stat"><b id="nInt">0</b><span>Interview</span></div>
-    <div class="stat"><b id="nLeft">0</b><span>Baaki</span></div>
-  </div>
-
-  <div class="bar">
-    <div class="seg" role="group" aria-label="Track">
-      <button data-t="seo" aria-pressed="true">SEO</button>
-      <button data-t="data" aria-pressed="false">Data / Web Analyst</button>
-      <button data-t="portals" aria-pressed="false">Portals</button>
+  <div class="today">
+    <div class="panel target">
+      <div class="row" style="justify-content:space-between">
+        <div><b id="tDone">0</b> <span class="note">/ <span id="tGoal">5</span> aaj apply</span></div>
+        <span class="tag t-hot" id="streak">Streak: 0 din</span>
+      </div>
+      <div class="prog"><i id="tBar"></i></div>
+      <div class="row">
+        <button class="btn" id="startBtn">Sabse fresh job kholo →</button>
+        <span class="note" id="tMsg">Roz ka alarm baje → yahan aao → 5 jobs pe apply.</span>
+      </div>
     </div>
-    <div class="seg" role="group" aria-label="Location" id="whereSeg">
-      <button data-w="all" aria-pressed="true">Sab</button>
-      <button data-w="india" aria-pressed="false">India (office/hybrid)</button>
-      <button data-w="remote" aria-pressed="false">Remote</button>
+    <div class="panel stats">
+      <div class="stat"><b id="sNew">0</b><span>Last 24 ghante mein aayi</span></div>
+      <div class="stat"><b id="sBoard">0</b><span>Board pe baaki</span></div>
+      <div class="stat"><b id="sApplied">0</b><span>Total applied</span></div>
+      <div class="stat"><b id="sInt">0</b><span>Interview calls</span></div>
     </div>
   </div>
 
-  <div class="grid" id="list"><p class="empty">Jobs load ho rahi hain…</p></div>
-
-  <div class="tips">
-    <h2>Call aane ke chances kaise badhaye</h2>
-    <ol>
-      <li>Har JD padh ke resume ke Skills/Summary mein uske exact shabd daalo (sirf jo sach mein aata hai).</li>
-      <li>"Strong" wale pehle karo. "Stretch" wale bhi zaroor bhejo, kyunki experience ki shart aksar flexible hoti hai.</li>
-      <li>Job post hone ke 48 ghante ke andar apply karo. Foundit pe "first 10 applicants" wali jobs sabse achhi hain.</li>
-      <li>Big companies (Gartner, Airtel, MakeMyTrip, Paytm) mein apply karne ke baad unke kisi employee se referral maango.</li>
-      <li>Salary mein ab 30k se kam pe mat jao. Jahan pay likha hai, wahan range ka upar wala hissa maango.</li>
-    </ol>
+  <nav class="tabs" role="tablist" aria-label="Sections" id="tabs"></nav>
+  <div class="filters" id="filters">
+    <div class="seg" role="group" aria-label="Posted" id="fAge">
+      <button data-v="1">24 ghante</button><button data-v="3">3 din</button><button data-v="7">7 din</button><button data-v="99">Sab</button>
+    </div>
+    <div class="seg" role="group" aria-label="Work mode" id="fMode">
+      <button data-v="all">Sab</button><button data-v="Remote">Remote</button><button data-v="Hybrid">Hybrid</button><button data-v="Office">Office</button>
+    </div>
+    <div class="seg" role="group" aria-label="Sort" id="fSort">
+      <button data-v="new">Newest</button><button data-v="fit">Best fit</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="fPay"> Salary likhi ho</label>
+    <input type="search" id="fQ" placeholder="Search company / title" aria-label="Search">
   </div>
+  <main id="view"></main>
 </div>
+
+<div class="ask" id="ask" role="dialog" aria-live="polite">
+  <p id="askText">Apply kar diya?</p>
+  <div class="row"><button class="btn ok" id="askYes">Haan, Applied ✓</button><button class="btn ghost" id="askNo">Abhi nahi</button></div>
+</div>
+<div class="toast" id="toast" role="status"><span id="toastText"></span><button id="toastUndo">Undo</button></div>
+
 <script>
 {
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl = u => /^https?:\/\//.test(u||'') ? u : '#';
-const PORTALS = [{"name": "Foundit – SEO, Delhi NCR", "url": "https://www.foundit.in/search/seo-jobs-in-delhi-ncr", "tip": "Open jobs marked 'Be among the first 10 applicants' – low crowd."}, {"name": "Foundit – GA4 jobs (web analyst)", "url": "https://www.foundit.in/search/ga4-jobs", "tip": "Web/digital analyst roles that fit both your skills."}, {"name": "Foundit – Data Analyst, Noida", "url": "https://www.foundit.in/search/data-analyst-jobs-in-noida", "tip": "Filter 2–4 yrs."}, {"name": "Weekday – SEO, Gurgaon", "url": "https://www.weekday.works/jobs/seo-jobs-in-gurgaon", "tip": "Startup roles, few applicants, direct to hiring team."}, {"name": "Weekday – Data Analyst, Noida", "url": "https://www.weekday.works/jobs/data-analyst-jobs-in-noida", "tip": ""}, {"name": "Cutshort – SEO, Delhi NCR", "url": "https://cutshort.io/jobs/seo-sem-jobs-in-delhi-ncr-gurgaon-noida", "tip": "Salary shown on every job – skip anything under ₹5 LPA."}, {"name": "Instahyre – SEO, Delhi NCR", "url": "https://www.instahyre.com/seo-jobs-in-delhi-ncr/", "tip": "Recruiters reach out to you – keep profile complete."}, {"name": "Instahyre – Remote SEO", "url": "https://www.instahyre.com/remote-seo-jobs/", "tip": ""}, {"name": "Himalayas – Remote SEO (India)", "url": "https://himalayas.app/jobs/countries/india/seo", "tip": "Remote roles, many foreign companies hiring in India."}, {"name": "Himalayas – Remote Data (India)", "url": "https://himalayas.app/jobs/countries/india/data-analysis", "tip": ""}, {"name": "iimjobs – Analytics, Delhi NCR", "url": "https://www.iimjobs.com/data-analytics-jobs-in-delhi-ncr", "tip": "Shows views vs applications – pick low-application jobs."}];
-let data = {jobs:[], portals:PORTALS}, track = 'seo', where = 'all';
-let st = {}; try { st = JSON.parse(localStorage.getItem('jobstatus') || '{}'); } catch(e) {}
-const save = () => { try { localStorage.setItem('jobstatus', JSON.stringify(st)); } catch(e) {} };
+const enc = encodeURIComponent;
+const LS = {get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const todayStr = () => new Date().toLocaleDateString('en-CA');
+const nowIso = () => new Date().toISOString();
+
+/* ---------------- settings ---------------- */
+const DEFAULT_ACH = `[seo] Wrote and presented the strategy to retire AMP pages on ABP's news website and make mobile web pages as light and fast as AMP (Core Web Vitals, page speed)
+[seo] Handle technical SEO for a high-traffic news publisher – indexing, crawl issues, structured data / schema, Google Discover and Google News visibility
+[data] Analyse user views and traffic from GA4 and Google Search Console to find which pages, topics and sections drive growth
+[data] Build dashboards and reports (SQL, Power BI / Looker Studio, Excel) that editorial and product teams use to make decisions
+[data] Automate recurring SEO and traffic reports with Python and Google Apps Script, saving manual effort every week
+[media] Work daily with newsroom and editorial teams, turning search and audience data into content and headline decisions`;
+const DEFAULT_SKILLS = 'SEO, Technical SEO, On-page SEO, Keyword research, Schema markup, Core Web Vitals, Google Search Console, Google Analytics 4, Google Tag Manager, Ahrefs, SEMrush, Screaming Frog, AEO / GEO, Google Discover, Google News, News SEO, AMP, Indexing & crawling, Looker Studio, SQL, BigQuery, Power BI, DAX, Tableau, Python, Pandas, Excel, Google Sheets, Apps Script, Dashboards, Reporting, KPIs, Data visualization, ETL, A/B testing, Statistics, LLM / GenAI, Digital media, News publishing, Newsroom, Audience growth, Content performance, Communication, Cross-functional';
+const S = Object.assign({target:5, token:'', repo:'', name:'Manvendra', email:'', phone:'', linkedin:'', portfolio:'', years:'3', company:'ABP', role:'', ach:DEFAULT_ACH, skills:DEFAULT_SKILLS}, LS.get('jb_settings', {}));
+const saveS = () => LS.set('jb_settings', S);
+
+/* ---------------- applied store (local + GitHub file) ---------------- */
+let APPLIED = LS.get('jb_applied', {});        // id -> {status, applied_on, updated_on, company, title, track, source, url, notes}
+const saveA = () => LS.set('jb_applied', APPLIED);
+const isOut = id => { const a = APPLIED[id]; return a && a.status && a.status !== 'undone'; };
+const counted = a => a && ['applied','interview','rejected','offer','ghosted'].includes(a.status);
+function mergeApplied(remote){
+  for (const [id, r] of Object.entries(remote || {})){
+    const l = APPLIED[id];
+    if (!l || (r.updated_on || r.applied_on || '') > (l.updated_on || l.applied_on || '')) APPLIED[id] = r;
+  }
+  saveA();
+}
+const REPO = (() => {
+  if (S.repo && S.repo.includes('/')) { const [o,r] = S.repo.split('/'); return {owner:o.trim(), repo:r.trim()}; }
+  const h = location.hostname; if (h.endsWith('.github.io')) return {owner:h.split('.')[0], repo:(location.pathname.split('/')[1] || h)};
+  return null;
+})();
+const b64e = s => { const b = new TextEncoder().encode(s); let x=''; b.forEach(c => x += String.fromCharCode(c)); return btoa(x); };
+const b64d = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g,'')), c => c.charCodeAt(0)));
+async function gh(method, body){
+  const url = `https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/data/applied.json`;
+  const r = await fetch(url + (method==='GET' ? `?t=${Date.now()}` : ''), {method, headers:{Authorization:`Bearer ${S.token}`, Accept:'application/vnd.github+json'}, body: body ? JSON.stringify(body) : undefined, cache:'no-store'});
+  if (method==='GET' && r.status===404) return {json:{jobs:{}}, sha:null};
+  if (!r.ok) throw new Error(`GitHub ${r.status}`);
+  const j = await r.json();
+  return method==='GET' ? {json: JSON.parse(b64d(j.content) || '{"jobs":{}}'), sha: j.sha} : j;
+}
+let syncChain = Promise.resolve();
+function setSync(t){ $$('.sync').forEach(e => e.textContent = t); }
+function sync(){
+  if (!S.token || !REPO) { setSync(S.token ? 'Repo pata nahi chala – Settings mein repo likho.' : 'Sirf is device pe saved (GitHub sync off).'); return syncChain; }
+  syncChain = syncChain.then(async () => {
+    setSync('GitHub pe save ho raha hai…');
+    for (let i = 0; i < 3; i++){
+      try {
+        const {json, sha} = await gh('GET');
+        mergeApplied(json.jobs);
+        const merged = {jobs: APPLIED};
+        if (JSON.stringify(json.jobs) !== JSON.stringify(APPLIED)) await gh('PUT', {message:`applied update ${todayStr()}`, content:b64e(JSON.stringify(merged, null, 1)), sha: sha || undefined});
+        setSync(`GitHub pe saved ✓ (${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})})`);
+        return;
+      } catch(e){ setSync('Sync fail: ' + e.message + ' – dobara try ho raha hai'); await new Promise(r => setTimeout(r, 1500)); }
+    }
+    setSync('Sync nahi hua – data is device pe safe hai. Settings mein token check karo.');
+  });
+  return syncChain;
+}
+
+/* ---------------- data ---------------- */
+let DATA = {jobs:[], sources:{}, rejected:{}};
+const TRACKS = {seo:'SEO', data:'Data / Business Analyst', science:'Data Scientist'};
+const TABS = [['all','Sab jobs'],['seo','SEO'],['data','Data / Business Analyst'],['science','Data Scientist'],['media','Media'],['portals','Portals'],['email','Cold Email + ATS'],['applied','Applied'],['settings','Settings']];
+const F = Object.assign({tab:'all', age:'3', mode:'all', sort:'new', pay:false, q:''}, LS.get('jb_filters', {}));
+const saveF = () => LS.set('jb_filters', {age:F.age, mode:F.mode, sort:F.sort, pay:F.pay});
 const fitRank = {strong:0, ok:1, stretch:2};
 const fitLabel = {strong:'Strong fit', ok:'Achha fit', stretch:'Stretch'};
-
-function stats(){
-  const v = Object.values(st);
-  $('#nApplied').textContent = v.filter(x => x==='applied' || x==='interview').length;
-  $('#nInt').textContent = v.filter(x => x==='interview').length;
-  $('#nLeft').textContent = data.jobs.filter(j => !st[j.id]).length;
+const ts = j => Date.parse(j.posted_at || j.first_seen || 0) || 0;
+function ago(iso){
+  const t = Date.parse(iso); if (!t) return '';
+  const h = (Date.now() - t) / 36e5;
+  if (h < 1) return 'abhi abhi'; if (h < 24) return `${Math.floor(h)} ghante pehle`;
+  const d = Math.floor(h / 24); return d === 1 ? 'kal' : `${d} din pehle`;
+}
+const board = () => DATA.jobs.filter(j => !isOut(j.id));
+function inTab(j, tab){ return tab==='all' || (tab==='media' ? j.media : j.track===tab); }
+function filtered(tab){
+  const q = F.q.trim().toLowerCase(), maxAge = (+F.age) * 864e5;
+  let rows = board().filter(j => inTab(j, tab) && (Date.now() - ts(j) <= maxAge) && (F.mode==='all' || j.mode===F.mode) && (!F.pay || j.pay) && (!q || `${j.company} ${j.title} ${j.location}`.toLowerCase().includes(q)));
+  rows.sort(F.sort==='fit' ? (a,b) => fitRank[a.fit]-fitRank[b.fit] || ts(b)-ts(a) : (a,b) => ts(b)-ts(a) || fitRank[a.fit]-fitRank[b.fit]);
+  return rows;
 }
 
-function render(){
-  $('#whereSeg').style.display = track==='portals' ? 'none' : '';
-  if (track === 'portals'){
-    $('#list').innerHTML = data.portals.map(p => `<div class="portal"><a href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener">${esc(p.name)} ↗</a>${p.tip?`<p class="note" style="margin-top:6px">${esc(p.tip)}</p>`:''}</div>`).join('');
-    return;
-  }
-  const rows = data.jobs.filter(j => j.track===track && (where==='all' || j.where===where))
-    .sort((a,b) => ((st[a.id]==='skip')-(st[b.id]==='skip')) || (b.is_new?1:0)-(a.is_new?1:0) || fitRank[a.fit]-fitRank[b.fit]);
-  if (!rows.length){ $('#list').innerHTML = '<p class="empty">Is filter mein abhi koi job nahi.</p>'; return; }
-  $('#list').innerHTML = rows.map(j => {
-    const s = st[j.id] || '';
-    return `<article class="job ${esc(s)}">
-      <div class="top"><div><div class="co">${j.is_new?'<span class="tag t-strong" style="margin-right:6px">NEW</span>':''}${esc(j.company)}</div><h3 class="ti">${esc(j.title)}</h3></div>
+/* ---------------- header numbers ---------------- */
+function header(){
+  const vals = Object.values(APPLIED);
+  const today = vals.filter(a => counted(a) && a.applied_on === todayStr()).length;
+  const goal = Math.max(1, +S.target || 5);
+  $('#tDone').textContent = today; $('#tGoal').textContent = goal;
+  $('#tBar').style.width = Math.min(100, today / goal * 100) + '%';
+  $('#tMsg').textContent = today >= goal ? 'Aaj ka target pura! 🎉 Extra apply = extra chance.' : `${goal - today} aur – har job pe 3–4 minute.`;
+  const days = new Set(vals.filter(counted).map(a => a.applied_on));
+  let n = 0; const d = new Date(); if (!days.has(todayStr())) d.setDate(d.getDate() - 1);
+  while (days.has(d.toLocaleDateString('en-CA'))) { n++; d.setDate(d.getDate() - 1); }
+  $('#streak').textContent = `Streak: ${n} din`;
+  const b = board();
+  $('#sNew').textContent = b.filter(j => Date.now() - ts(j) < 864e5).length;
+  $('#sBoard').textContent = b.length;
+  $('#sApplied').textContent = vals.filter(counted).length;
+  $('#sInt').textContent = vals.filter(a => a.status==='interview' || a.status==='offer').length;
+}
+
+/* ---------------- tabs ---------------- */
+function tabs(){
+  const cnt = t => ['all','seo','data','science','media'].includes(t) ? filtered(t).length : t==='applied' ? Object.values(APPLIED).filter(counted).length : null;
+  $('#tabs').innerHTML = TABS.map(([k,l]) => { const n = cnt(k); return `<button role="tab" data-tab="${k}" aria-selected="${F.tab===k}">${l}${n!==null?`<span class="n">${n}</span>`:''}</button>`; }).join('');
+  $('#filters').style.display = ['all','seo','data','science','media'].includes(F.tab) ? '' : 'none';
+  for (const [id, key] of [['#fAge','age'],['#fMode','mode'],['#fSort','sort']]) $$(id+' button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === String(F[key])));
+  $('#fPay').checked = F.pay;
+}
+
+/* ---------------- job cards ---------------- */
+function card(j){
+  const age = Date.now() - ts(j);
+  const b = [];
+  if (j.posted_at && age < 48*36e5) b.push(`<span class="tag t-hot">🔥 Early · ${ago(j.posted_at)}</span>`);
+  if (Date.now() - Date.parse(j.first_seen||0) < 6*36e5) b.push('<span class="tag t-new">NEW</span>');
+  if (j.applicants != null) b.push(`<span class="tag ${j.applicants<=25?'t-hot':''}">${j.applicants<=25?'Kam bheed: ':''}${j.applicants} applicants</span>`);
+  if (j.media) b.push('<span class="tag t-media">Media</span>');
+  if (j.direct) b.push('<span class="tag">Company site</span>');
+  const when = j.posted_at ? `Posted ${ago(j.posted_at)}` : `Bot ne ${ago(j.first_seen)} dekhi`;
+  return `<article class="job" id="j-${esc(j.id)}">
+    <div class="top"><div>${b.length?`<div class="badges">${b.join('')}</div>`:''}
+      <div class="co">${esc(j.company)}</div><h3 class="ti">${esc(j.title)}</h3></div>
       <span class="tag t-${esc(j.fit)}">${esc(fitLabel[j.fit]||j.fit)}</span></div>
-      <div class="meta"><span>📍 ${esc(j.location)}</span><span>${esc(j.mode)}</span><span>${esc(j.exp)}</span>${j.pay?`<span class="pay">${esc(j.pay)}</span>`:''}<span>${esc(j.posted)}</span></div>
-      <p class="note">${esc(j.note)}</p>
-      <div class="act"><a class="btn" href="${esc(safeUrl(j.url))}" target="_blank" rel="noopener">Apply ↗</a>
-        <select data-id="${esc(j.id)}" aria-label="Status">
-          <option value="" ${!s?'selected':''}>Abhi apply karna hai</option>
-          <option value="applied" ${s==='applied'?'selected':''}>Applied ✓</option>
-          <option value="interview" ${s==='interview'?'selected':''}>Interview call aaya 🎉</option>
-          <option value="skip" ${s==='skip'?'selected':''}>Skip</option>
-        </select><span class="src">${esc(j.source)}</span></div>
-    </article>`;
-  }).join('');
+    <div class="meta"><span>📍 ${esc(j.location||'—')}</span><span>${esc(j.mode)}</span><span>${esc(j.exp)}</span>${j.pay?`<span class="pay">${esc(j.pay)}</span>`:'<span>Salary not listed</span>'}<span>${esc(when)}</span></div>
+    <p class="why">${j.hits && j.hits.length ? `Match: ${esc(j.hits.slice(0,7).join(', '))}. ` : ''}<em>Upload: ${esc(j.resume)} · via ${esc(j.source)}</em></p>
+    <div class="act">
+      <a class="btn" href="${esc(safeUrl(j.url))}" target="_blank" rel="noopener" data-open="${esc(j.id)}">Apply ↗</a>
+      <button class="btn ok" data-applied="${esc(j.id)}">✓ Applied</button>
+      <button class="btn ghost small" data-mail="${esc(j.id)}">Email / ATS</button>
+      <button class="btn quiet small" data-skip="${esc(j.id)}">Skip</button>
+      ${j.alt_url?`<a class="note" href="${esc(safeUrl(j.alt_url))}" target="_blank" rel="noopener">listing ↗</a>`:''}
+    </div></article>`;
+}
+function jobsView(tab){
+  const rows = filtered(tab);
+  let h = '';
+  if (tab==='media') h += `<div class="section"><h2>Media mein SEO / Data jobs</h2><p>News, digital media, OTT, audio aur global media companies ki SEO / analyst jobs. Neeche media companies ki list bhi hai – unke naam pe click karke seedha unki fresh openings dekho.</p></div>`;
+  if (!DATA.jobs.length) h += `<p class="empty">Jobs load ho rahi hain… (pehli baar bot chalne ke baad yahan jobs aayengi)</p>`;
+  else if (!rows.length) h += `<p class="empty">Is filter mein abhi koi job nahi. ${F.age!=='7'&&F.age!=='99'?'<button class="btn ghost small" data-age="7">7 din wali dikhao</button>':''} ${F.mode!=='all'?'<button class="btn ghost small" data-mode="all">Sab mode dikhao</button>':''}</p>`;
+  else h += `<div class="grid">${rows.map(card).join('')}</div>`;
+  if (tab==='media') h += mediaDirectory();
+  return h;
 }
 
-document.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { track = b.dataset.t; document.querySelectorAll('[data-t]').forEach(x => x.setAttribute('aria-pressed', x===b)); render(); });
-document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { where = b.dataset.w; document.querySelectorAll('[data-w]').forEach(x => x.setAttribute('aria-pressed', x===b)); render(); });
-$('#list').addEventListener('change', e => { const s = e.target.closest('select[data-id]'); if(!s) return; if (s.value) st[s.dataset.id] = s.value; else delete st[s.dataset.id]; save(); stats(); render(); });
+/* ---------------- portals ---------------- */
+const PQ = {seo:['SEO','seo'], data:['Data Analyst','data-analyst'], ba:['Business Analyst','business-analyst'], sci:['Data Scientist','data-scientist']};
+let pTrack = LS.get('jb_ptrack', 'seo');
+const G = (q, t) => `https://www.google.com/search?q=${enc(q)}${t?`&tbs=qdr:${t}`:''}`;
+function portalGroups(){
+  const [q, slug] = PQ[pTrack];
+  const him = {seo:'seo', data:'data-analysis', ba:'business-analysis', sci:'data-science'}[pTrack];
+  const ats = `(site:jobs.lever.co OR site:job-boards.greenhouse.io OR site:boards.greenhouse.io OR site:jobs.ashbyhq.com OR site:apply.workable.com OR site:jobs.smartrecruiters.com) "${q}" (India OR Noida OR Gurugram OR Gurgaon OR Delhi OR Remote)`;
+  const indianAts = `(site:darwinbox.in OR site:keka.com OR site:zohorecruit.in OR site:freshteam.com OR site:hire.trakstar.com) "${q}" (Noida OR Gurugram OR Delhi OR Remote)`;
+  const ncrLI = 'location=New%20Delhi%2C%20Delhi%2C%20India&distance=50';
+  return [
+    ['Sabse fresh – aaj post hui', 'Roz pehle yahi kholo. Filters already lage hain (24 ghante, sahi experience, salary jahan possible).', [
+      ['LinkedIn – Delhi NCR, 24 ghante', 'Newest first. Associate + Mid-Senior level.', `https://www.linkedin.com/jobs/search/?keywords=${enc(q)}&${ncrLI}&f_TPR=r86400&sortBy=DD&f_E=2%2C3%2C4`],
+      ['LinkedIn – Remote (India), 24 ghante', 'Sirf remote jobs.', `https://www.linkedin.com/jobs/search/?keywords=${enc(q)}&location=India&f_WT=2&f_TPR=r86400&sortBy=DD`],
+      ['LinkedIn – Under 10 applicants (week)', 'Kam bheed wali. Agar filter na lage to "Under 10 applicants" khud on karo.', `https://www.linkedin.com/jobs/search/?keywords=${enc(q)}&location=India&f_TPR=r604800&f_EA=true&sortBy=DD`],
+      ['Naukri – Delhi NCR, 1 din, 6+ LPA', '3 yrs experience, aaj ki jobs, ₹6 LPA se upar.', `https://www.naukri.com/${slug}-jobs-in-delhi-ncr?k=${enc(q)}&l=delhi%20ncr&experience=3&jobAge=1&ctcFilter=6to10&ctcFilter=10to15&ctcFilter=15to25`],
+      ['Naukri – Remote, 3 din', 'Work from home wali.', `https://www.naukri.com/${slug}-jobs?k=${enc(q)}&experience=3&jobAge=3&wfhType=2`],
+      ['Indeed – Delhi NCR, 24 ghante', 'Newest first, 50 km radius (Noida + Gurgaon).', `https://in.indeed.com/jobs?q=${enc(q)}&l=Delhi%2C+Delhi&radius=50&fromage=1&sort=date`],
+      ['Indeed – Remote, 3 din', '', `https://in.indeed.com/jobs?q=${enc(q)}&sc=0kf%3Aattr(DSQF7)%3B&fromage=3&sort=date`],
+      ['Google Jobs – Delhi NCR, 3 din', 'Sab portals ek jagah (Naukri, Foundit, company sites).', `https://www.google.com/search?q=${enc(q+' jobs delhi ncr')}&ibp=htl;jobs&htichips=date_posted:3days`],
+      ['Foundit – Delhi NCR', '"Be among the first 10 applicants" wali kholo.', `https://www.foundit.in/search/${slug}-jobs-in-delhi-ncr`],
+    ]],
+    ['Company career pages – direct, kam bheed', 'Ye jobs seedha company ki website pe hain. Recruiter tak pahunchne ka sabse seedha raasta.', [
+      ['Lever / Greenhouse / Ashby / Workable – 24 ghante', 'Google X-ray: aaj post hui company jobs.', G(ats, 'd')],
+      ['Same – last 7 din', '', G(ats, 'w')],
+      ['Indian ATS (Darwinbox, Keka, Zoho) – 7 din', 'Indian companies ke career pages.', G(indianAts, 'w')],
+    ]],
+    ['Startup portals – jaldi response', 'Yahan recruiter khud message karte hain. Profile ek baar poora bhar do.', [
+      ['Instahyre – Delhi NCR', 'Recruiters reach out – profile complete rakho.', `https://www.instahyre.com/${slug}-jobs-in-delhi-ncr/`],
+      ['Weekday – Gurgaon', 'Startup roles, direct hiring team.', `https://www.weekday.works/jobs/${slug}-jobs-in-gurgaon`],
+      ['Cutshort – last 7 din', 'Salary har job pe dikhti hai – 6.6 LPA se kam skip.', G(`site:cutshort.io/job "${q}" (Delhi OR Noida OR Gurgaon OR Remote)`, 'w')],
+      ['Wellfound (AngelList) – last 7 din', 'Startups, salary range dikhti hai.', G(`site:wellfound.com/jobs "${q}" India`, 'w')],
+      ['iimjobs / Updazz – last 7 din', 'Views vs applications dikhata hai – kam applications wali chuno.', G(`(site:iimjobs.com OR site:updazz.com) "${q}" (Delhi OR Noida OR Gurgaon OR Remote)`, 'w')],
+    ]],
+    ['Remote – India se kaam, koi travel nahi', 'Foreign companies jo India se hire karti hain. Dollar salary = ₹55k se kaafi upar.', [
+      ['Himalayas – India', 'Remote roles open to India.', `https://himalayas.app/jobs/countries/india/${him}`],
+      ['Jobgether – India remote', 'Bahut saari India-remote listings.', 'https://jobs.lever.co/jobgether?location=India'],
+      ['Uplers – global remote', 'Indian talent ko US/UK companies se jodta hai.', G(`site:uplers.com "${q}" remote`, 'w')],
+      ['Working Nomads / Remotive / Jobicy – India', '', G(`(site:workingnomads.com OR site:remotive.com OR site:jobicy.com) "${q}" India`, 'w')],
+    ]],
+    ['Media industry', 'News, digital media, OTT aur audio companies.', [
+      ['LinkedIn – media companies, 7 din', 'News / media / publishing / OTT keywords ke saath.', `https://www.linkedin.com/jobs/search/?keywords=${enc(q+' (news OR media OR publishing OR OTT OR digital media)')}&location=India&f_TPR=r604800&sortBy=DD`],
+      ['Naukri – media, 3 din', '', `https://www.naukri.com/${slug}-media-jobs?k=${enc(q+' media')}&experience=3&jobAge=3`],
+      ['exchange4media / afaqs jobs', 'Media-industry job boards.', G(`(site:exchange4media.com OR site:afaqs.com) "${q}" job`, 'm')],
+    ]],
+  ];
+}
+function portalsView(){
+  return `<div class="filters"><div class="seg" role="group" aria-label="Role" id="pSeg">${Object.entries(PQ).map(([k,[l]]) => `<button data-p="${k}" aria-pressed="${pTrack===k}">${l}</button>`).join('')}</div></div>` +
+    portalGroups().map(([t, d, items]) => `<div class="section"><h2>${esc(t)}</h2><p>${esc(d)}</p></div><div class="cards">${items.map(([n, tip, u]) => `<div class="pc"><h3>${esc(n)}</h3>${tip?`<p>${esc(tip)}</p>`:''}<div class="row" style="margin-top:auto"><a class="btn small" href="${esc(u)}" target="_blank" rel="noopener">Kholo ↗</a></div></div>`).join('')}</div>`).join('');
+}
 
-fetch('jobs.json', {cache:'no-store'}).then(r => r.json()).then(d => {
-  data = {jobs:d.jobs||[], portals:PORTALS}; $('#upd').textContent = 'Last update: ' + d.updated + '.'; stats(); render();
-}).catch(() => { $('#list').innerHTML = '<p class="empty">Jobs load nahi hui. Page reload karo.</p>'; });
+/* ---------------- media directory ---------------- */
+const MEDIA = [
+  ['News (India)', ['Times Internet','HT Digital (Hindustan Times, Mint)','India Today Group (Aaj Tak)','NDTV','Network18 (News18, Moneycontrol)','Zee Media / Zee Digital','The Indian Express','Jagran New Media','Amar Ujala','DB Digital (Dainik Bhaskar)','The Hindu','Lokmat','Business Standard','TV9 Network','Republic Media','Outlook']],
+  ['Digital media & apps', ['Inshorts','Dailyhunt (VerSe Innovation)','ShareChat (Mohalla Tech)','Glance (InMobi)','YourStory','Inc42','Scroll','ThePrint','The Quint','Pinkvilla','Oneindia','Quintype']],
+  ['OTT / audio / entertainment', ['JioStar (JioHotstar)','Sony Pictures Networks (SonyLIV)','Zee5','Pocket FM','Kuku FM','JioSaavn','Pratilipi','TVF','Amazon MX Player','Spotify India','Netflix India']],
+  ['Global media (India offices / remote)', ['Thomson Reuters','Bloomberg','Dow Jones','Warner Bros. Discovery','The New York Times','BBC','Dotdash Meredith','Ziff Davis','Condé Nast','Publicis Groupe','Dentsu','GroupM (WPP)']],
+];
+const OFFICIAL = {'Thomson Reuters':'https://careers.thomsonreuters.com/','Bloomberg':'https://www.bloomberg.com/company/careers/','Spotify India':'https://www.lifeatspotify.com/jobs','Netflix India':'https://explore.jobs.netflix.net/careers','The New York Times':'https://www.nytco.com/careers/'};
+function mediaDirectory(){
+  const q = {seo:'SEO', data:'Data Analyst', ba:'Business Analyst', sci:'Data Scientist'}[pTrack];
+  return `<div class="section"><h2>Media companies – seedha unki openings</h2><p>Role chuno, phir company pe click karo. LinkedIn last 30 din ki jobs dikhayega, Google Jobs sab portals ki.</p>
+    <div class="seg" role="group" aria-label="Role" id="mSeg" style="display:inline-flex;margin-bottom:10px">${Object.entries(PQ).map(([k,[l]]) => `<button data-p="${k}" aria-pressed="${pTrack===k}">${l}</button>`).join('')}</div></div>` +
+    MEDIA.map(([cat, list]) => `<h3 style="margin:16px 0 8px">${esc(cat)}</h3><div class="cards">${list.map(c => { const short = c.replace(/\s*\(.*\)/,''); return `<div class="pc"><h3>${esc(c)}</h3><div class="row"><a class="btn small" target="_blank" rel="noopener" href="https://www.linkedin.com/jobs/search/?keywords=${enc(short+' '+q)}&location=India&f_TPR=r2592000&sortBy=DD">LinkedIn ↗</a><a class="btn ghost small" target="_blank" rel="noopener" href="https://www.google.com/search?q=${enc(short+' '+q+' jobs')}&ibp=htl;jobs">Google Jobs ↗</a>${OFFICIAL[c]?`<a class="btn quiet small" target="_blank" rel="noopener" href="${OFFICIAL[c]}">Careers ↗</a>`:''}</div></div>`; }).join('')}</div>`).join('');
+}
+
+/* ---------------- applied tab ---------------- */
+const STATUS = {applied:'Applied', interview:'Interview call 🎉', offer:'Offer 🏆', rejected:'Rejected', ghosted:'No reply', skip:'Skipped'};
+function appliedView(){
+  const rows = Object.entries(APPLIED).filter(([,a]) => a.status && a.status!=='undone').sort((a,b) => (b[1].updated_on||'').localeCompare(a[1].updated_on||''));
+  const real = rows.filter(([,a]) => a.status!=='skip');
+  const due = real.filter(([,a]) => a.status==='applied' && (Date.now()-Date.parse(a.applied_on)) > 5*864e5);
+  return `<div class="section"><h2>Applied jobs (${real.length})</h2><p>Jo bhi "Applied" dabaya, yahan aata hai aur GitHub repo ki <b>data/applied.json</b>, <b>data/applied.csv</b> aur <b>data/jobs.db</b> (SQLite) mein save hota hai. <span class="sync"></span></p>
+    <div class="row"><button class="btn ghost small" id="csvBtn">CSV download</button><button class="btn ghost small" id="jsonBtn">Backup (JSON)</button></div></div>
+    ${due.length?`<p class="warn">${due.length} jobs mein 5+ din se reply nahi aaya – "Follow-up" dabao, email ready mil jayega.</p>`:''}
+    ${rows.length?`<div class="tablewrap"><table><thead><tr><th>Date</th><th>Company / Role</th><th>Status</th><th></th></tr></thead><tbody>${rows.map(([id,a]) => `<tr>
+      <td>${esc(a.applied_on||'')}</td>
+      <td><b>${esc(a.company)}</b><br>${esc(a.title)}<br><a class="note" href="${esc(safeUrl(a.url))}" target="_blank" rel="noopener">${esc(a.source||'link')} ↗</a></td>
+      <td><select data-status="${esc(id)}" aria-label="Status">${Object.entries(STATUS).map(([k,l]) => `<option value="${k}" ${a.status===k?'selected':''}>${l}</option>`).join('')}<option value="undone">Wapas board pe bhejo</option></select></td>
+      <td>${a.status==='applied'?`<button class="btn ghost small" data-follow="${esc(id)}">Follow-up</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<p class="empty">Abhi kuch applied nahi. Kisi job pe "✓ Applied" dabao.</p>'}`;
+}
+
+/* ---------------- settings ---------------- */
+function settingsView(){
+  const src = Object.entries(DATA.sources||{});
+  return `<div class="two"><div>
+    <div class="section"><h2>Tumhari details (cold email mein jaati hain)</h2><p>Sirf is browser mein save hoti hain.</p></div>
+    <div class="fields">
+      ${[['name','Naam'],['email','Email'],['phone','Phone'],['linkedin','LinkedIn URL'],['portfolio','Portfolio / GitHub (optional)'],['years','Experience (saal)'],['company','Current company'],['role','Current role (jaise SEO Executive)']].map(([k,l]) => `<div><label for="s_${k}">${l}</label><input id="s_${k}" data-s="${k}" value="${esc(S[k])}"></div>`).join('')}
+      <div><label for="s_target">Roz ka target (applications)</label><input id="s_target" data-s="target" type="number" min="1" max="30" value="${esc(S.target)}"></div>
+      <div class="full"><label for="s_skills">Tumhari skills (comma se alag) – ATS match inhi se hota hai. Sirf wahi rakho jo sach mein aata hai.</label><textarea id="s_skills" data-s="skills">${esc(S.skills)}</textarea></div>
+      <div class="full"><label for="s_ach">Achievements – ek line = ek point. Shuru mein [seo] / [data] / [science] / [media] likho. Numbers daalo (jaise "traffic 40% badha") – email zyada strong banega.</label><textarea id="s_ach" data-s="ach" style="min-height:200px">${esc(S.ach)}</textarea></div>
+    </div></div>
+    <div>
+    <div class="section"><h2>Phone + laptop dono pe Applied sync</h2>
+      <p>Abhi "Applied" sirf is device pe yaad rehta hai. GitHub token daaloge to har click repo ki <b>data/applied.json</b> mein save hoga – phone, laptop dono pe same list, aur bot wo job dobara kabhi nahi dikhayega.</p>
+      <ol class="note"><li>GitHub → Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token</li><li>Repository access: <b>Only select repositories → job-bot</b></li><li>Permissions → Repository → <b>Contents: Read and write</b> → Generate → copy</li><li>Neeche paste karo → Save. Phone pe bhi ek baar yahi karo.</li></ol>
+      <div class="fields"><div class="full"><label for="s_token">GitHub token</label><input id="s_token" data-s="token" type="password" autocomplete="off" value="${esc(S.token)}" placeholder="github_pat_…"></div>
+      <div class="full"><label for="s_repo">Repo (khali chhodo – apne aap pata chal jaata hai)</label><input id="s_repo" data-s="repo" value="${esc(S.repo)}" placeholder="${REPO?esc(REPO.owner+'/'+REPO.repo):'username/job-bot'}"></div></div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="saveSet">Save</button><button class="btn ghost" id="syncNow">Abhi sync karo</button><span class="sync"></span></div>
+      <p class="note">Token sirf tumhare browser mein rehta hai, repo mein nahi jaata. Ise kisi ke saath share mat karna.</p>
+    </div>
+    <div class="section"><h2>Bot health</h2><p>Last run: ${esc(DATA.updated||'—')} · ${esc(DATA.minutes??'–')} min · 1 USD = ₹${esc(DATA.fx_usd||'–')}</p>
+    ${src.length?`<div class="tablewrap"><table><thead><tr><th>Source</th><th>Mili</th><th>Board pe</th><th>Problem</th></tr></thead><tbody>${src.map(([n,s]) => `<tr><td>${esc(n)}</td><td>${esc(s.fetched??0)}</td><td>${esc(s.kept??0)}</td><td class="note">${esc(s.error||'')}</td></tr>`).join('')}</tbody></table></div>`:''}
+    ${DATA.rejected&&Object.keys(DATA.rejected).length?`<p class="note" style="margin-top:10px"><b>Kyun hatai gayi:</b> ${Object.entries(DATA.rejected).map(([k,v]) => `${esc(k)}: ${v}`).join(' · ')}</p>`:''}
+    </div></div></div>`;
+}
+
+/* ---------------- cold email + ATS ---------------- */
+const KW = [
+ // [canonical, group, aliases...]
+ ['SEO','seo','seo','search engine optimization','search engine optimisation'],['Technical SEO','seo','technical seo','tech seo'],['On-page SEO','seo','on-page','on page','onpage'],['Off-page SEO / Link building','seo','off-page','off page','link building','backlink','backlinks'],['Keyword research','seo','keyword research','keyword planning','keyword mapping'],['Content strategy','seo','content strategy','content planning','content optimization','content optimisation'],['Schema markup','seo','schema','structured data','json-ld'],['Core Web Vitals','seo','core web vitals','cwv','lcp','page speed','pagespeed','site speed'],['Google Search Console','seo','search console','gsc'],['Google Analytics 4','seo','ga4','google analytics','ga 4'],['Google Tag Manager','seo','tag manager','gtm'],['Ahrefs','seo','ahrefs'],['SEMrush','seo','semrush'],['Screaming Frog','seo','screaming frog'],['Moz','seo','moz'],['Google Discover','seo','google discover'],['Google News','seo','google news'],['News SEO','seo','news seo'],['AMP','seo','amp'],['Indexing & crawling','seo','indexing','indexation','crawl','crawling','crawl budget','robots.txt','sitemap','sitemaps'],['JavaScript SEO','seo','javascript seo','js seo','server-side rendering'],['Site migration','seo','site migration','website migration','domain migration'],['International SEO','seo','international seo','hreflang'],['AEO / GEO','seo','aeo','geo','answer engine','generative engine','ai overviews','ai search','llm optimization','llmo'],['E-E-A-T','seo','e-e-a-t','eeat','e-a-t'],['Local SEO','seo','local seo','google business profile','gmb'],['E-commerce SEO','seo','e-commerce seo','ecommerce seo'],['WordPress','seo','wordpress'],['HTML / CSS','seo','html','css'],['Competitor analysis','seo','competitor analysis','competitive analysis'],['SERP analysis','seo','serp','serps'],['Organic traffic growth','seo','organic traffic','organic growth','organic search'],['Looker Studio','data','looker studio','data studio'],['Log file analysis','seo','log file','log analysis'],
+ ['SQL','data','sql','mysql','postgresql','postgres','t-sql'],['BigQuery','data','bigquery','big query'],['Excel','data','excel','advanced excel','vlookup','pivot','pivot tables','xlookup'],['Google Sheets','data','google sheets','spreadsheets'],['Power BI','data','power bi','powerbi'],['DAX','data','dax'],['Tableau','data','tableau'],['Looker','data','lookml','looker bi','looker dashboards'],['Python','data','python'],['Pandas','data','pandas'],['NumPy','data','numpy'],['R','data','r programming','rstudio'],['Data visualization','data','data visualization','data visualisation','visualization','visualisation'],['Dashboards','data','dashboard','dashboards'],['Reporting','data','reporting','reports','mis'],['KPIs','data','kpi','kpis','metrics'],['A/B testing','data','a/b','ab testing','a/b testing','experimentation','split testing'],['Statistics','data','statistics','statistical','hypothesis testing','regression analysis'],['ETL','data','etl','data pipeline','data pipelines'],['Data cleaning','data','data cleaning','data cleansing','data wrangling','data quality'],['Data modeling','data','data modeling','data modelling'],['Stakeholder management','data','stakeholder','stakeholders'],['Requirements gathering','data','requirement gathering','requirements gathering','brd','frd','user stories'],['Business analysis','data','business analysis','gap analysis','process mapping'],['Jira','data','jira'],['Agile','data','agile','scrum'],['Product analytics','data','product analytics','product metrics'],['Funnel analysis','data','funnel','funnels'],['Cohort / retention analysis','data','cohort','retention'],['Segmentation','data','segmentation'],['Mixpanel / Amplitude','data','mixpanel','amplitude','clevertap','moengage'],['Apps Script','data','apps script','google apps script'],['Automation','data','automation','automate','automated'],['Snowflake','data','snowflake'],['Redshift','data','redshift'],['Airflow','data','airflow'],['dbt','data','dbt'],['Forecasting','data','forecast','forecasting'],['Web analytics','data','web analytics','digital analytics','adobe analytics'],
+ ['Machine learning','science','machine learning','ml models','ml'],['Scikit-learn','science','scikit-learn','sklearn','scikit'],['Regression / classification','science','regression','classification','logistic regression'],['Clustering','science','clustering','k-means'],['NLP','science','nlp','natural language processing'],['Deep learning','science','deep learning','neural network','neural networks'],['TensorFlow / PyTorch','science','tensorflow','pytorch','keras'],['LLM / GenAI','science','llm','llms','generative ai','genai','gpt','prompt engineering'],['Feature engineering','science','feature engineering'],['Model deployment','science','model deployment','mlops'],['Time series','science','time series','time-series'],['Recommendation systems','science','recommendation','recommender'],['Jupyter','science','jupyter'],['Spark','science','spark','pyspark'],
+ ['Digital media','media','digital media','online media'],['News publishing','media','publisher','publishing','news website','news portal'],['Newsroom','media','newsroom','editorial','editors','journalists'],['Audience growth','media','audience growth','audience development','audience engagement','user engagement'],['Content performance','media','content performance','page views','pageviews','traffic analysis'],['Social media','media','social media'],['YouTube','media','youtube'],['Subscriptions','media','subscription','subscriptions','paywall'],
+ ['Communication','soft','communication skills','communication'],['Cross-functional','soft','cross-functional','cross functional'],['Problem solving','soft','problem solving','problem-solving'],
+];
+const KWRX = KW.map(([c,g,...al]) => ({c, g, rx: new RegExp('(?<![a-z0-9])(' + al.map(a => a.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&')).join('|') + ')(?![a-z0-9])', 'i')}));
+function findKW(text){
+  const t = text.toLowerCase(), hits = [];
+  for (const k of KWRX){ const m = t.match(k.rx); if (m) hits.push({...k, pos:m.index}); }
+  return hits.sort((a,b) => a.pos - b.pos);
+}
+const mySkills = () => S.skills.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+function haveSkill(c){ const cl = c.toLowerCase(); return mySkills().some(s => s === cl || (s.length > 3 && cl.length > 3 && (cl.includes(s) || s.includes(cl)))); }
+function achievements(track, hits){
+  const lines = S.ach.split('\n').map(l => l.trim()).filter(Boolean).map(l => { const m = l.match(/^\[(\w+)\]\s*/); return {tag: m ? m[1].toLowerCase() : '', text: l.replace(/^\[\w+\]\s*/, '')}; });
+  return lines.map(a => ({...a, score: (a.tag===track?3:0) + (a.tag==='media'?1:0) + hits.filter(h => h.rx.test(a.text)).length*2}))
+    .sort((a,b) => b.score - a.score).slice(0, 3).map(a => a.text.replace(/\.$/,''));
+}
+const join = a => a.length <= 1 ? (a[0]||'') : a.slice(0,-1).join(', ') + ' and ' + a[a.length-1];
+function generate(){
+  const jd = $('#g_jd').value, company = $('#g_co').value.trim() || 'your company', role = $('#g_role').value.trim() || 'this role', who = $('#g_who').value.trim();
+  if (jd.trim().length < 40){ $('#gOut').innerHTML = '<p class="empty">Upar job description paste karo (kam se kam 2–3 lines), phir Generate dabao.</p>'; return; }
+  const hits = findKW(jd).filter(h => h.g !== 'soft');
+  const g = {seo:0, data:0, science:0}; hits.forEach(h => { if (g[h.g] !== undefined) g[h.g]++; });
+  let track = $('#g_track').value;
+  if (track === 'auto') track = g.science >= 3 && g.science >= g.seo ? 'science' : (g.seo >= g.data ? 'seo' : 'data');
+  const have = hits.filter(h => haveSkill(h.c)), miss = hits.filter(h => !haveSkill(h.c));
+  const pct = hits.length ? Math.round(have.length / hits.length * 100) : 0;
+  const top = have.map(h => h.c);
+  const ach = achievements(track, hits);
+  const yrs = S.years || '3', myCo = S.company || 'my current company', name = S.name || '';
+  const roleNow = S.role || {seo:'SEO professional', data:'analytics professional', science:'data professional'}[track];
+  const field = {seo:'SEO and search growth', data:'web analytics, reporting and SEO data', science:'data analysis and analytics'}[track];
+  const where = /abp/i.test(myCo) ? `${myCo}, one of India's large digital news publishers` : myCo;
+  const sign = [name, [S.phone, S.email].filter(Boolean).join(' | '), S.linkedin, S.portfolio].filter(Boolean).join('\n');
+  const resumeName = `${(name||'Name').replace(/\s+/g,'_')}_${{seo:'SEO',data:'Data_Analyst',science:'Data_Scientist'}[track]}_Resume.pdf`;
+  const summary = `${roleNow.charAt(0).toUpperCase()+roleNow.slice(1)} with ${yrs}+ years of experience in ${field} at ${where}. Hands-on with ${join(top.slice(0,6)) || 'the tools in this JD'}. ${ach[0] ? ach[0] + '.' : ''} Looking to bring this experience to the ${role} role at ${company}.`;
+  const skillsLine = top.join(' | ');
+  const subj = [`Application: ${role} – ${yrs} yrs ${ {seo:'SEO',data:'analytics',science:'data'}[track] } experience (${top.slice(0,2).join(', ')})`, `${name || 'Candidate'} | ${role} at ${company}`, `${role} – ${top[0] || 'relevant'} experience from digital media`];
+  const hi = who ? `Hi ${who.split(' ')[0]},` : 'Hi Hiring Team,';
+  const email = `${hi}
+
+I came across the ${role} opening at ${company} and wanted to reach out directly. I have ${yrs}+ years of experience in ${field} at ${where}, working hands-on with ${join(top.slice(0,4)) || 'the tools your team uses'}.
+
+What I would bring to this role:
+${ach.map(a => '• ' + a).join('\n')}
+
+${top.length >= 2 ? `Your JD asks for ${join(top.slice(0,3))} – that is the work I do every day.` : 'I would be glad to show how my experience maps to what your team needs.'} I have attached my resume. Would you be open to a 15-minute call this week?
+
+Thanks,
+${sign}`;
+  const follow = `${hi}
+
+Just following up on my application for the ${role} role at ${company}, which I sent last week. I am still very interested – my ${yrs}+ years in ${field}${top.length?` (${join(top.slice(0,3))})`:''} match what the role needs.
+
+Happy to share more details or do a quick call whenever convenient.
+
+Thanks,
+${sign}`;
+  let note = `Hi ${who ? who.split(' ')[0] : 'there'}, I just applied for the ${role} role at ${company}. I have ${yrs}+ yrs in ${field} at ${myCo}${top.length?` (${top.slice(0,2).join(', ')})`:''}. Would love to connect!`;
+  if (note.length > 300) note = note.slice(0, 297) + '...';
+  const dm = `Hi ${who ? who.split(' ')[0] : 'there'},
+
+I saw that ${company} is hiring for ${role} and I have applied. Quick background: ${yrs}+ years in ${field} at ${where}.
+${ach.slice(0,2).map(a => '• ' + a).join('\n')}
+
+If you are the right person for this role, could I share my resume or have a quick chat? Thank you!
+${name}`;
+  const why = `I have ${yrs}+ years of experience in ${field} at ${where}. ${ach.slice(0,2).join('. ')}. ${top.length?`I work daily with ${join(top.slice(0,5))}, which matches what this role asks for. `:''}I enjoy turning data into clear decisions, and I am ready to bring the same ownership to ${company}.`;
+  const gmail = `https://mail.google.com/mail/?view=cm&fs=1&su=${enc(subj[0])}&body=${enc(email)}`;
+  const box = (title, text, id) => `<div class="out"><h3>${title}<button class="btn ghost small" data-copy="${id}">Copy</button></h3><pre id="${id}">${esc(text)}</pre></div>`;
+  $('#gOut').innerHTML = `
+    <div class="out"><h3>ATS match <span class="note">${esc(TRACKS[track])} resume</span></h3>
+      <div class="row" style="align-items:flex-end;gap:14px"><span class="meter" style="color:var(${pct>=70?'--ok':pct>=50?'--amb':'--red'})">${pct}%</span><span class="note">${pct>=70?'Achha match – apply karo.':pct>=50?'Theek hai. Missing words resume mein daalo (sirf agar aata hai).':'Weak match. Missing words dekho – agar aata hai to resume mein add karo, warna "stretch" samjho.'}<br>JD ke ${hits.length} keywords mein se ${have.length} tumhare paas.</span></div>
+      <p class="note" style="margin:10px 0 4px">Tumhare paas (resume mein JD ke same shabdon mein likho):</p><div class="chips">${have.map(h => `<span class="chip have">${esc(h.c)}</span>`).join('') || '<span class="note">—</span>'}</div>
+      <p class="note" style="margin:10px 0 4px">Missing (sirf tab add karo jab sach mein aata ho):</p><div class="chips">${miss.map(h => `<span class="chip miss">${esc(h.c)}</span>`).join('') || '<span class="note">Kuch missing nahi 🎉</span>'}</div>
+      <p class="note" style="margin-top:10px">Resume file ka naam: <b>${esc(resumeName)}</b> · Simple format (no tables/photos/columns) · Headings: Summary, Experience, Skills, Education.</p></div>
+    ${box('1. Resume summary – is JD ke liye (resume ke top pe paste karo)', summary, 'o1')}
+    ${box('2. Skills line (JD ke order mein)', skillsLine || 'Settings mein apni skills daalo.', 'o2')}
+    <div class="out"><h3>3. Cold email – subject options</h3><pre>${esc(subj.join('\n'))}</pre></div>
+    <div class="out"><h3>Cold email <span class="row"><a class="btn small" href="${esc(gmail)}" target="_blank" rel="noopener">Gmail mein kholo ↗</a><button class="btn ghost small" data-copy="o3">Copy</button></span></h3><pre id="o3">${esc(email)}</pre></div>
+    ${box('4. LinkedIn connection note (300 characters se kam)', note, 'o4')}
+    ${box('5. LinkedIn message to recruiter / hiring manager', dm, 'o5')}
+    ${box('6. Application form: "Why are you a good fit?"', why, 'o6')}
+    ${box('7. Follow-up email (5 din baad reply na aaye to)', follow, 'o7')}
+    ${!S.email||!S.phone?'<p class="warn">Settings mein apna email, phone aur LinkedIn URL daal do – email ke neeche apne aap aa jayenge.</p>':''}`;
+}
+let G0 = {};
+function emailView(){
+  return `<div class="two"><div>
+    <div class="section"><h2>Cold Email + ATS</h2><p>JD paste karo → Generate. Ye sab is page pe hi banta hai (internet / Claude ki zaroorat nahi). Har job card pe "Email / ATS" dabaoge to JD apne aap yahan aa jayega.</p></div>
+    <div class="fields">
+      <div><label for="g_co">Company</label><input id="g_co" value="${esc(G0.company||'')}"></div>
+      <div><label for="g_role">Role / job title</label><input id="g_role" value="${esc(G0.title||'')}"></div>
+      <div><label for="g_who">Kisko likh rahe ho (naam, optional)</label><input id="g_who" placeholder="jaise Priya Sharma"></div>
+      <div><label for="g_track">Resume</label><select id="g_track"><option value="auto">Auto (JD se)</option><option value="seo">SEO</option><option value="data">Data / Business Analyst</option><option value="science">Data Scientist</option></select></div>
+      <div class="full"><label for="g_jd">Job description</label><textarea id="g_jd" style="min-height:260px" placeholder="Poora JD yahan paste karo…">${esc(G0.desc||'')}</textarea></div>
+    </div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="genBtn">Generate</button><button class="btn quiet" id="genClear">Clear</button></div>
+    ${G0.desc?'<p class="note">Bot ke paas JD ka sirf pehla hissa hota hai – best result ke liye job page se poora JD copy karke paste karo.</p>':''}
+    </div><div id="gOut"><p class="empty">Output yahan aayega: ATS match %, missing keywords, resume summary, cold email, LinkedIn note, follow-up.</p></div></div>`;
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  tabs(); header();
+  const t = F.tab, v = $('#view');
+  if (['all','seo','data','science','media'].includes(t)) v.innerHTML = jobsView(t);
+  else if (t==='portals') v.innerHTML = portalsView();
+  else if (t==='email'){ v.innerHTML = emailView(); if (G0.desc) generate(); }
+  else if (t==='applied') v.innerHTML = appliedView();
+  else v.innerHTML = settingsView();
+  sync0();
+}
+function sync0(){ setSync(!S.token ? 'Sirf is device pe saved (Settings mein GitHub sync on karo).' : 'GitHub sync on ✓'); }
+
+/* ---------------- actions ---------------- */
+let lastUndo = null, toastT;
+function toast(text, undo){
+  $('#toastText').textContent = text; lastUndo = undo; $('#toastUndo').style.display = undo ? '' : 'none';
+  $('#toast').classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => $('#toast').classList.remove('show'), 6000);
+}
+function mark(id, status){
+  const j = DATA.jobs.find(x => x.id === id) || {};
+  const prev = APPLIED[id] ? {...APPLIED[id]} : null;
+  const keepDate = prev && prev.status && prev.status !== 'undone' && prev.status !== 'skip' && prev.applied_on;
+  APPLIED[id] = {status, applied_on: keepDate || todayStr(), updated_on: nowIso(),
+    company: j.company || prev?.company || '', title: j.title || prev?.title || '', track: j.track || prev?.track || '',
+    source: j.source || prev?.source || '', url: j.url || prev?.url || '', notes: prev?.notes || ''};
+  saveA();
+  const el = document.getElementById('j-' + id);
+  const after = () => { render(); sync(); };
+  if (el && (status==='applied' || status==='skip')) { el.classList.add('gone'); setTimeout(after, 280); } else after();
+  if (status==='applied') toast(`✓ Applied: ${j.title || ''} – list mein save`, () => { if (prev) APPLIED[id] = {...prev, updated_on: nowIso()}; else APPLIED[id] = {...APPLIED[id], status:'undone', updated_on: nowIso()}; saveA(); render(); sync(); });
+  if (status==='skip') toast('Skip kar di', () => { APPLIED[id] = {...APPLIED[id], status:'undone', updated_on: nowIso()}; saveA(); render(); sync(); });
+}
+let pending = null;
+document.addEventListener('click', e => {
+  const t = e.target.closest('button,a'); if (!t) return;
+  const d = t.dataset;
+  if (d.tab){ F.tab = d.tab; render(); window.scrollTo({top: $('#tabs').offsetTop - 4}); }
+  else if (t.closest('#fAge') && d.v){ F.age = d.v; saveF(); render(); }
+  else if (t.closest('#fMode') && d.v){ F.mode = d.v; saveF(); render(); }
+  else if (t.closest('#fSort') && d.v){ F.sort = d.v; saveF(); render(); }
+  else if (d.age){ F.age = d.age; saveF(); render(); }
+  else if (d.mode){ F.mode = d.mode; saveF(); render(); }
+  else if (d.p){ pTrack = d.p; LS.set('jb_ptrack', pTrack); render(); }
+  else if (d.open){ pending = {id: d.open, at: Date.now()}; }
+  else if (d.applied) mark(d.applied, 'applied');
+  else if (d.skip) mark(d.skip, 'skip');
+  else if (d.mail){ const j = DATA.jobs.find(x => x.id === d.mail); G0 = {company:j.company, title:j.title, desc:j.desc}; F.tab = 'email'; render(); window.scrollTo({top: $('#tabs').offsetTop - 4}); }
+  else if (d.follow){ const a = APPLIED[d.follow]; const j = DATA.jobs.find(x => x.id === d.follow) || {}; G0 = {company:a.company, title:a.title, desc:j.desc || `${a.title} at ${a.company}`}; F.tab = 'email'; render(); setTimeout(() => document.getElementById('o7')?.scrollIntoView({behavior:'smooth'}), 50); }
+  else if (d.copy){ const txt = document.getElementById(d.copy).textContent; navigator.clipboard.writeText(txt).then(() => { t.textContent = 'Copied ✓'; setTimeout(() => t.textContent = 'Copy', 1500); }); }
+  else if (t.id==='genBtn') generate();
+  else if (t.id==='genClear'){ G0 = {}; render(); }
+  else if (t.id==='startBtn'){ if (!['all','seo','data','science','media'].includes(F.tab)) { F.tab = 'all'; render(); } const first = $('.job'); if (first){ first.scrollIntoView({behavior:'smooth', block:'center'}); first.querySelector('[data-open]').focus({preventScroll:true}); } else toast('Abhi board khaali hai – Portals tab kholo.'); }
+  else if (t.id==='saveSet'){ $$('[data-s]').forEach(i => S[i.dataset.s] = i.value.trim ? i.value.trim() : i.value); saveS(); toast('Settings saved'); sync().then(() => render()); }
+  else if (t.id==='syncNow'){ sync().then(() => render()); }
+  else if (t.id==='csvBtn') download('applied.csv', toCSV(), 'text/csv');
+  else if (t.id==='jsonBtn') download('applied.json', JSON.stringify({jobs:APPLIED}, null, 1), 'application/json');
+  else if (t.id==='toastUndo'){ if (lastUndo) lastUndo(); $('#toast').classList.remove('show'); }
+  else if (t.id==='askYes'){ $('#ask').classList.remove('show'); if (pending) mark(pending.id, 'applied'); pending = null; }
+  else if (t.id==='askNo'){ $('#ask').classList.remove('show'); pending = null; }
+});
+document.addEventListener('change', e => {
+  const s = e.target.closest('[data-status]'); if (s){ APPLIED[s.dataset.status] = {...APPLIED[s.dataset.status], status: s.value, updated_on: nowIso()}; saveA(); render(); sync(); }
+  if (e.target.id==='fPay'){ F.pay = e.target.checked; saveF(); render(); }
+});
+document.addEventListener('input', e => { const m = {g_jd:'desc', g_co:'company', g_role:'title'}[e.target.id]; if (m) G0[m] = e.target.value; });
+$('#fQ').addEventListener('input', e => { F.q = e.target.value; const v = $('#view'); v.innerHTML = jobsView(F.tab); tabs(); $('#fQ').focus(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState !== 'visible' || !pending || Date.now() - pending.at < 8000 || isOut(pending.id)) return;
+  const j = DATA.jobs.find(x => x.id === pending.id); if (!j) return;
+  $('#askText').textContent = `Apply kar diya? ${j.title} – ${j.company}`; $('#ask').classList.add('show');
+});
+function toCSV(){
+  const rows = [['status','applied_on','company','title','track','source','url']].concat(Object.values(APPLIED).filter(a => a.status && a.status!=='undone').map(a => [a.status,a.applied_on,a.company,a.title,a.track,a.source,a.url]));
+  return '﻿' + rows.map(r => r.map(x => `"${String(x??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+}
+function download(name, text, type){ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], {type})); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
+
+/* ---------------- load ---------------- */
+async function load(){
+  render();
+  try {
+    const [jr, ar] = await Promise.all([fetch('jobs.json?t=' + Date.now(), {cache:'no-store'}), fetch('applied.json?t=' + Date.now(), {cache:'no-store'}).catch(() => null)]);
+    DATA = await jr.json();
+    if (ar && ar.ok) mergeApplied((await ar.json()).jobs);
+  } catch(e){ DATA = {jobs:[], sources:{}, rejected:{}}; $('#upd').textContent = 'Jobs load nahi hui – thodi der mein refresh karo.'; }
+  if (DATA.updated){
+    const mins = (Date.now() - Date.parse(DATA.updated_iso)) / 6e4;
+    $('#upd').textContent = `Last update: ${DATA.updated}${mins > 300 ? ' (bot late hai – GitHub Actions check karo)' : ''} · is run mein ${DATA.new_this_run ?? 0} nayi.`;
+  }
+  if (!localStorage.getItem('jb_filters') && DATA.jobs.length && !filtered('all').length) F.age = '7';
+  render();
+  if (S.token) sync().then(() => render());
+}
+load();
 }
 </script>
 </body>

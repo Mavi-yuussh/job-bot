@@ -1,5 +1,5 @@
 @echo off
-REM Double-click to fetch new jobs on your own laptop, then open the board.
+REM Double-click: fetch fresh jobs on your own laptop, then open the board.
 cd /d %~dp0
 python -m pip install -q -r requirements.txt
 python jobs_bot.py
